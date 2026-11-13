@@ -137,7 +137,7 @@ var LEVELS=['','Til kursi','Bakalavr','Magistr','Doktorantura','Boshqa'];
 var SOURCES=['','Instagram','Telegram','Tanish orqali','Reklama','Boshqa'];
 var CUR=['USD','TRY','UZS','EUR'];
 var SECTIONS=[
-['Asosiy',[['fullName','F.I.Sh. *','text'],['phone','Telefon raqami','tel'],['passportNo','Pasport raqami','text'],['birth','Tug\'ilgan sana','date'],['motherName','Onasining ismi','text'],['university','Universitet','text']]],
+['Asosiy',[['fullName','F.I.Sh. *','text'],['createdAt','Qachon kirib kelgan','date'],['phone','Telefon raqami','tel'],['passportNo','Pasport raqami','text'],['birth','Tug\'ilgan sana','date'],['motherName','Onasining ismi','text'],['university','Universitet','text']]],
 ['Muddat va to\'lov',[['deadline','Muddat tugash sanasi','date'],['source','Qayerdan keldi','select',SOURCES],['contract','Shartnoma summasi','number'],['currency','Valyuta','select',CUR]]],
 ['Izoh',[['notes','Qo\'shimcha izoh','textarea']]]
 ];
@@ -405,11 +405,11 @@ Promise.all(files.map(function(f){var img=/^image\//.test(f.type),base=f.name.re
 var prep=img?(f.size>1500000||!/jpe?g|png|webp/i.test(f.type)?shrink(f,2000,.85).then(function(d){return {blob:dataToBlob(d),ext:'.jpg',type:'image/jpeg'}},function(){return {blob:f,ext:'.'+(f.name.split('.').pop()||'jpg').toLowerCase(),type:f.type}}):Promise.resolve({blob:f,ext:/png/.test(f.type)?'.png':/webp/.test(f.type)?'.webp':'.jpg',type:f.type})):Promise.resolve({blob:f,ext:'.pdf',type:'application/pdf'});
 return prep.then(function(p){return sb.storage.from('client-files').upload(id+'/docs/'+nm+p.ext,p.blob,{contentType:p.type})}).then(function(r){if(r.error)throw r.error})})).then(function(){toast('Yuklandi');loadDocs(id)},function(){toast('Yuklab bo\'lmadi');loadDocs(id)})}
 function form(c){
-var isNew=!c,v=c||{status:'new',country:'Turkiya',currency:'USD'};
+var isNew=!c,v=c||{status:'new',country:'Turkiya',currency:'USD',createdAt:new Date(Date.now()-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,10)};
 if(noDeadlineCol)v=Object.assign({},v);
 var h='<h2>'+(isNew?'Yangi mijoz':'Mijozni tahrirlash')+'</h2>';
 SECTIONS.forEach(function(s){h+='<div class="sec">'+s[0]+'</div><div class="fg">';
-s[1].forEach(function(f){var val=v[f[0]]==null?'':v[f[0]],inner;
+s[1].forEach(function(f){var val=v[f[0]]==null?'':v[f[0]],inner;if(f[2]==='date')val=String(val).slice(0,10);
 if(f[2]==='select'){var o=f[3]==='STATUS'?Object.keys(STATUS).map(function(k){return [k,STATUS[k]]}):f[3].map(function(k){return [k,k]});
 inner='<select data-f="'+f[0]+'">'+o.map(function(p){return '<option value="'+esc(p[0])+'"'+(String(val)===p[0]?' selected':'')+'>'+esc(p[1]||'—')+'</option>'}).join('')+'</select>'}
 else if(f[2]==='textarea')inner='<textarea data-f="'+f[0]+'">'+esc(val)+'</textarea>';
@@ -423,6 +423,7 @@ $('#cn').onclick=function(){c?detail(c.id):closeM()};
 $('#sv').onclick=function(){
 var o={};document.querySelectorAll('#mod [data-f]').forEach(function(e){var k=e.dataset.f;o[k]=e.type==='number'?(e.value===''?0:+e.value):e.value.trim()});
 if(!o.fullName){toast('F.I.Sh. kiritilishi shart');return}
+if(o.createdAt){if(c&&String(c.createdAt).slice(0,10)===o.createdAt)delete o.createdAt;else o.createdAt=o.createdAt+'T12:00:00'}else delete o.createdAt;
 var btn=this;btn.disabled=true;btn.textContent='Saqlanmoqda...';
 var ph=$('#ph').files[0],ps=$('#ps').files[0],newId=null;
 Promise.all([ph?shrink(ph,260,.8,40000):null,ps?shrink(ps,1200,.72,300000):null]).then(function(r){
