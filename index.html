@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>StepUpEdu xodimlari</title>
+<style>
+:root{--bg:#f4f6fb;--card:#fff;--ink:#12182b;--muted:#6a738a;--line:#e3e7f1;--brand:#1d3fa8;--brand2:#0b2a6f;--ok:#16a34a;--warn:#d97706;--bad:#dc2626;--r:14px}
+@media(prefers-color-scheme:dark){:root{--bg:#0d1120;--card:#161b30;--ink:#eef1fb;--muted:#9aa4c2;--line:#262d4a}}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink)}
+button,input,select,textarea{font:inherit;color:inherit}
+.top{position:sticky;top:0;z-index:20;background:var(--card);border-bottom:1px solid var(--line)}
+.top .in{max-width:1100px;margin:0 auto;padding:10px 14px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:9px;font-weight:700;font-size:17px}
+.logo{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#1d3fa8,#0b2a6f);color:#fff;font-size:0;overflow:hidden;flex:none}
+.tabs{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap}
+.tabs button{border:0;background:none;padding:8px 13px;border-radius:999px;color:var(--muted);font-weight:600;cursor:pointer}
+.tabs button.on{background:rgba(79,70,229,.12);color:var(--brand)}
+.btn{border:1px solid var(--line);background:var(--card);padding:9px 15px;border-radius:10px;font-weight:600;cursor:pointer}
+.btn.p{background:linear-gradient(135deg,var(--brand),var(--brand2));border-color:transparent;color:#fff}
+.btn.d{color:var(--bad);border-color:rgba(220,38,38,.35)}
+.btn:disabled{opacity:.5;cursor:default}
+main{max-width:1100px;margin:0 auto;padding:16px 14px 80px}
+.note{background:rgba(217,119,6,.12);border:1px solid rgba(217,119,6,.35);color:var(--warn);padding:9px 13px;border-radius:10px;font-size:13px;margin-bottom:14px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:16px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:15px}
+.kpi small{color:var(--muted);display:block}
+.kpi b{font-size:26px;display:block;margin-top:2px}
+.kpi span{font-size:13px;color:var(--muted)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:760px){.grid2{grid-template-columns:1fr}}
+.box{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:15px;margin-bottom:12px}
+.box h3{margin:0 0 12px;font-size:15px}
+.bars{display:flex;align-items:flex-end;gap:10px;height:150px}
+.bars div{flex:1;text-align:center;font-size:12px;color:var(--muted);display:flex;flex-direction:column;justify-content:flex-end;height:100%}
+.bars i{display:block;background:linear-gradient(180deg,var(--brand2),var(--brand));border-radius:8px 8px 3px 3px;min-height:3px}
+.bars b{color:var(--ink);font-size:13px}
+.hrow{display:flex;align-items:center;gap:10px;margin:8px 0;font-size:14px}
+.hrow .l{width:140px;flex:none;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hrow .t{flex:1;background:var(--bg);border-radius:99px;height:9px;overflow:hidden}
+.hrow .t i{display:block;height:100%;background:var(--brand);border-radius:99px}
+.hrow .n{width:30px;text-align:right;font-weight:700}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.filters input,.filters select{padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--card);min-width:0}
+.filters input{flex:1;min-width:180px}
+.list{display:grid;gap:10px}
+.row{display:grid;grid-template-columns:52px 1.4fr 1.2fr 1fr auto;gap:12px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:11px 13px;cursor:pointer;text-align:left;width:100%}
+.row:hover{border-color:var(--brand)}
+@media(max-width:760px){.row{grid-template-columns:48px 1fr auto}.row .c3,.row .c4{display:none}}
+.av{width:48px;height:48px;border-radius:12px;background:var(--bg);object-fit:cover;display:grid;place-items:center;color:var(--muted);font-weight:700;overflow:hidden}
+.av img{width:100%;height:100%;object-fit:cover}
+.row b{display:block}
+.row small{color:var(--muted)}
+.chip{display:inline-block;padding:3px 10px;border-radius:99px;font-size:12px;font-weight:700;white-space:nowrap}
+.s-new{background:rgba(79,70,229,.14);color:var(--brand)}
+.s-docs{background:rgba(217,119,6,.15);color:var(--warn)}
+.s-applied{background:rgba(2,132,199,.15);color:#0284c7}
+.s-accepted,.s-visa,.s-arrived{background:rgba(22,163,74,.15);color:var(--ok)}
+.s-rejected{background:rgba(220,38,38,.14);color:var(--bad)}
+.empty{text-align:center;color:var(--muted);padding:40px 10px}
+.uni{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px;margin-bottom:10px}
+.uni h4{margin:0 0 2px;font-size:16px}
+.uni .m{color:var(--muted);font-size:13px;margin-bottom:8px}
+.uni ul{margin:0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:6px}
+.uni li{background:rgba(22,163,74,.12);color:var(--ok);padding:4px 11px;border-radius:99px;font-size:13px;font-weight:600;cursor:pointer}
+.ov{position:fixed;inset:0;background:rgba(8,12,28,.55);z-index:50;display:none;align-items:flex-start;justify-content:center;overflow:auto;padding:20px 10px}
+.ov.on{display:flex}
+.mod{background:var(--card);border-radius:18px;width:100%;max-width:760px;padding:18px;border:1px solid var(--line)}
+.mod h2{margin:0 0 4px;font-size:20px}
+.sec{margin:16px 0 8px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:600px){.fg{grid-template-columns:1fr}}
+.fg label{display:block;font-size:13px;color:var(--muted)}
+.fg label.w{grid-column:1/-1}
+.fg input,.fg select,.fg textarea{width:100%;margin-top:3px;padding:10px 11px;border:1px solid var(--line);border-radius:10px;background:var(--bg)}
+.fg textarea{min-height:80px;resize:vertical}
+.acts{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;margin-top:18px}
+.kv{display:grid;grid-template-columns:1fr 1fr;gap:8px 14px}
+@media(max-width:600px){.kv{grid-template-columns:1fr}}
+.kv div{font-size:14px}
+.kv small{display:block;color:var(--muted);font-size:12px}
+.cp{border:0;background:none;color:var(--brand);cursor:pointer;font-size:12px;font-weight:700;padding:0 0 0 6px}
+.hd{display:flex;gap:14px;align-items:center;margin-bottom:6px}
+.hd .av{width:84px;height:84px;border-radius:16px;font-size:26px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+td,th{padding:7px 4px;border-bottom:1px solid var(--line);text-align:left}
+.scan{max-width:100%;border-radius:12px;border:1px solid var(--line);margin-top:6px}
+.gate{max-width:460px;margin:80px auto;text-align:center;padding:0 16px}
+.gate .logo{margin:0 auto 14px;width:84px;height:84px}
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:99px;font-size:14px;z-index:90;display:none}
+.ai{width:100%;padding:12px;margin:5px 0;border:1px solid var(--line);border-radius:10px;background:var(--card)}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+<div id="app"><div class="gate"><div class="logo"></div><h2>StepUpEdu xodimlari</h2><p style="color:var(--muted)">Yuklanmoqda...</p></div></div>
+<div class="ov" id="ov"><div class="mod" id="mod"></div></div>
+<div class="toast" id="toast"></div>
+<script>
+(function(){
+var CFG={url:'https://iutkiawmfqxwifbwljqj.supabase.co',key:'sb_publishable_rMlgOREFzUM3R6b1ofLwYw_bbIxV-Zt'};
+var STATUS={new:'Yangi',docs:"Hujjat yig'ilmoqda",applied:'Topshirildi',accepted:'Qabul qilindi',visa:'Vizada',arrived:'Yetib bordi',rejected:'Rad etildi'};
+var WON={accepted:1,visa:1,arrived:1};
+var LEVELS=['','Til kursi','Bakalavr','Magistr','Doktorantura','Boshqa'];
+var SOURCES=['','Instagram','Telegram','Tanish orqali','Reklama','Boshqa'];
+var CUR=['USD','TRY','UZS','EUR'];
+var SECTIONS=[
+['Shaxsiy ma\'lumot',[['fullName','F.I.Sh. *','text'],['birth','Tug\'ilgan sana','date'],['gender','Jinsi','select',['','Erkak','Ayol']],['passportNo','Pasport raqami','text'],['passportExpiry','Pasport amal qilish muddati','date'],['address','Yashash manzili','text']]],
+['Aloqa',[['phone','Telefon raqami','tel'],['phone2','Qo\'shimcha telefon','tel'],['email','Email','email']]],
+['Ota-ona',[['fatherName','Otasining ismi','text'],['fatherPhone','Otasining raqami','tel'],['motherName','Onasining ismi','text'],['motherPhone','Onasining raqami','tel']]],
+['Ta\'lim',[['country','Davlat','text'],['university','Universitet','text'],['faculty','Fakultet / yo\'nalish','text'],['level','Daraja','select',LEVELS],['status','Holati','select','STATUS'],['source','Qayerdan keldi','select',SOURCES]]],
+['Moliya',[['contract','Shartnoma summasi','number'],['currency','Valyuta','select',CUR]]],
+['Izoh',[['notes','Qo\'shimcha izoh','textarea']]]
+];
+var KM={fullName:'full_name',birth:'birth',gender:'gender',passportNo:'passport_no',passportExpiry:'passport_expiry',address:'address',phone:'phone',phone2:'phone2',email:'email',fatherName:'father_name',fatherPhone:'father_phone',motherName:'mother_name',motherPhone:'mother_phone',country:'country',university:'university',faculty:'faculty',level:'level',status:'status',source:'source',contract:'contract',currency:'currency',notes:'notes',photo:'photo',payments:'payments',passportScan:'passport_scan',createdAt:'created_at',createdBy:'created_by',updatedAt:'updated_at'};
+var DATES={birth:1,passportExpiry:1};
+var sb=null,me=null,prof=null,isAdmin=false,poll=null,chan=null,rt=null;
+var clients=[],profiles={},loaded=false,view='dash',q='',fs='',fu='',staffOpen=false,loadErr='';
+
+function $(s){return document.querySelector(s)}
+function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function money(n,c){return (c||'USD')+' '+Math.round(n||0).toLocaleString('en-US').replace(/,/g,' ')}
+function dmy(s){if(!s)return '';var p=String(s).slice(0,10).split('-');return p.length===3?p[2]+'.'+p[1]+'.'+p[0]:s}
+function paid(c){return (c.payments||[]).reduce(function(a,p){return a+(+p.amount||0)},0)}
+function initials(n){return (n||'?').trim().split(/\s+/).slice(0,2).map(function(x){return x[0]}).join('').toUpperCase()}
+function toast(t){var e=$('#toast');e.textContent=t;e.style.display='block';clearTimeout(toast.t);toast.t=setTimeout(function(){e.style.display='none'},2600)}
+function copy(t){try{navigator.clipboard.writeText(t).then(function(){toast('Nusxalandi')},function(){toast('Nusxalab bo\'lmadi')})}catch(e){toast('Nusxalab bo\'lmadi')}}
+function openM(h){$('#mod').innerHTML=h;$('#ov').classList.add('on')}
+function closeM(){staffOpen=false;$('#ov').classList.remove('on');$('#mod').innerHTML=''}
+$('#ov').addEventListener('mousedown',function(e){if(e.target===this)closeM()});
+
+function toRow(o){var r={};Object.keys(o).forEach(function(k){if(!KM[k])return;var v=o[k];if(DATES[k]&&!v)v=null;r[KM[k]]=v});return r}
+function fromRow(r){var o={id:r.id};Object.keys(KM).forEach(function(k){var v=r[KM[k]];o[k]=v==null?'':v});o.payments=Array.isArray(r.payments)?r.payments:[];o.contract=+r.contract||0;return o}
+function pname(id){return (profiles[id]&&profiles[id].full_name)||''}
+
+function shrink(file,max,q0,limit){return new Promise(function(res,rej){
+var img=new Image(),url=URL.createObjectURL(file);
+img.onload=function(){var s=Math.min(1,max/Math.max(img.width,img.height)),w=Math.round(img.width*s),h=Math.round(img.height*s),c=document.createElement('canvas');c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);
+var qq=q0,out=c.toDataURL('image/jpeg',qq);while(limit&&out.length>limit&&qq>0.3){qq-=0.1;out=c.toDataURL('image/jpeg',qq)}
+URL.revokeObjectURL(url);if(limit&&out.length>limit)rej(new Error('big'));else res(out)};
+img.onerror=function(){rej(new Error('img'))};img.src=url})}
+function dataToBlob(d){var p=d.split(','),bin=atob(p[1]),a=new Uint8Array(bin.length);for(var i=0;i<bin.length;i++)a[i]=bin.charCodeAt(i);return new Blob([a],{type:'image/jpeg'})}
+
+function gate(msg,btn,fn){$('#app').innerHTML='<div class="gate"><div class="logo"></div><h2>StepUpEdu xodimlari</h2><p style="color:var(--muted)">'+msg+'</p>'+(btn?'<button class="btn p" id="gb" style="margin-top:6px">'+btn+'</button> ':'')+(me?'<button class="btn" id="go">Chiqish</button>':'')+'</div>';
+if(btn)$('#gb').onclick=fn;if(me)$('#go').onclick=logout}
+function logout(){clearInterval(poll);if(chan){sb.removeChannel(chan);chan=null}sb.auth.signOut().then(function(){me=null;prof=null;authScreen('login')})}
+function errTxt(e){var m=(e&&e.message)||'';if(/Invalid login/i.test(m))return 'Email yoki parol noto\'g\'ri';if(/already registered/i.test(m))return 'Bu email allaqachon ro\'yxatdan o\'tgan';if(/Password should/i.test(m))return 'Parol kamida 6 belgi bo\'lsin';if(/Email not confirmed/i.test(m))return 'Emailingizni tasdiqlang (xatni tekshiring)';return m||'Xatolik yuz berdi'}
+
+function authScreen(mode){
+var reg=mode==='reg';
+var f=function(id,ph,type){return '<input id="'+id+'" type="'+(type||'text')+'" placeholder="'+ph+'" autocomplete="off" class="ai">'};
+$('#app').innerHTML='<div class="gate"><div class="logo"></div><h2>StepUpEdu xodimlari</h2><p style="color:var(--muted)">'+(reg?'Ro\'yxatdan o\'ting. Egasi tasdiqlagach kira olasiz.':'Hisobingiz bilan kiring.')+'</p>'+
+(reg?f('a1','F.I.Sh. (to\'liq)')+f('a2','Lavozimingiz')+f('a3','Telefon raqamingiz','tel'):'')+f('ae','Email','email')+f('ap','Parol','password')+
+'<p id="aerr" style="color:var(--bad);min-height:22px;margin:6px 0"></p><button class="btn p" id="ago" style="width:100%">'+(reg?'Ro\'yxatdan o\'tish':'Kirish')+'</button>'+
+'<p style="margin-top:14px"><button class="cp" id="asw" style="font-size:14px">'+(reg?'Hisobim bor, kirish':'Yangi xodim? Ro\'yxatdan o\'ting')+'</button></p></div>';
+$('#asw').onclick=function(){authScreen(reg?'login':'reg')};
+var go=function(){var e=$('#ae').value.trim(),p=$('#ap').value,er=function(m){$('#aerr').textContent=m};
+if(!e||!p){er('Email va parolni kiriting');return}
+var b=$('#ago');b.disabled=true;
+if(reg){var n=$('#a1').value.trim(),r=$('#a2').value.trim(),ph=$('#a3').value.trim();
+if(n.length<5||!r||!ph){b.disabled=false;er('Hamma maydonni to\'ldiring (ism va familiya to\'liq)');return}
+sb.auth.signUp({email:e,password:p,options:{data:{full_name:n,role_title:r,phone:ph}}}).then(function(x){b.disabled=false;
+if(x.error){er(errTxt(x.error));return}
+if(x.data.session)route(x.data.session);else gate('Emailingizga tasdiqlash xati yuborildi. Xatdagi havolani bosing, so\'ng shu yerga qaytib kiring.')},function(){b.disabled=false;er('Ulanib bo\'lmadi')})}
+else sb.auth.signInWithPassword({email:e,password:p}).then(function(x){b.disabled=false;if(x.error){er(errTxt(x.error));return}route(x.data.session)},function(){b.disabled=false;er('Ulanib bo\'lmadi')})};
+$('#ago').onclick=go;$('#ap').addEventListener('keydown',function(ev){if(ev.key==='Enter')go()});
+}
+
+function route(session){
+if(!session){authScreen('login');return}
+me=session.user;
+sb.from('profiles').select('*').eq('id',me.id).maybeSingle().then(function(r){
+if(r.error||!r.data){gate('Profilingiz topilmadi. Egasiga murojaat qiling yoki qayta ro\'yxatdan o\'ting.');return}
+prof=r.data;
+if(prof.status==='approved'){clearInterval(poll);isAdmin=!!prof.is_admin;boot()}
+else if(prof.status==='blocked'){clearInterval(poll);gate('Kirishingiz rad etilgan. StepUpEdu egasiga murojaat qiling.')}
+else{gate('<b>'+esc(prof.full_name||'')+'</b>, so\'rovingiz yuborildi. Egasi tasdiqlashini kuting, tasdiqlangach sahifa o\'zi ochiladi.');
+clearInterval(poll);poll=setInterval(function(){route(session)},8000)}
+},function(){gate('Tekshirib bo\'lmadi. Sahifani qayta oching.')})
+}
+
+function loadAll(){
+return Promise.all([sb.from('clients').select('*').order('created_at',{ascending:false}),sb.from('profiles').select('*')]).then(function(r){
+if(r[0].error){loadErr='Ma\'lumotlarni o\'qib bo\'lmadi: '+r[0].error.message}else{loadErr='';clients=r[0].data.map(fromRow)}
+if(!r[1].error){profiles={};r[1].data.forEach(function(p){profiles[p.id]=p})}
+loaded=true;updBadge();
+if(staffOpen)staffModal();else if(!$('#ov').classList.contains('on'))render()
+},function(){loadErr='Ulanib bo\'lmadi. Internetni tekshiring.';loaded=true;render()})}
+function boot(){
+shell();render();loadAll();
+chan=sb.channel('live').on('postgres_changes',{event:'*',schema:'public',table:'clients'},sched).on('postgres_changes',{event:'*',schema:'public',table:'profiles'},sched).subscribe();
+function sched(){clearTimeout(rt);rt=setTimeout(loadAll,400)}
+}
+
+function shell(){
+$('#app').innerHTML='<div class="top"><div class="in"><div class="brand"><div class="logo">S</div>StepUpEdu xodimlari</div>'+
+'<div class="tabs"><button data-v="dash">Bosh sahifa</button><button data-v="list">Mijozlar</button><button data-v="unis">Universitetlar</button></div>'+
+(isAdmin?'<button class="btn" id="staffBtn">Xodimlar</button>':'')+'<button class="btn p" id="addBtn">+ Yangi mijoz</button><button class="btn" id="outBtn">Chiqish</button></div></div><main id="main"></main>';
+document.querySelectorAll('.tabs button').forEach(function(b){b.addEventListener('click',function(){view=b.dataset.v;render()})});
+$('#addBtn').addEventListener('click',function(){form(null)});$('#outBtn').addEventListener('click',logout);
+if($('#staffBtn'))$('#staffBtn').addEventListener('click',staffModal);updBadge();
+}
+function pendingCount(){return Object.keys(profiles).filter(function(i){return profiles[i].status==='pending'}).length}
+function updBadge(){var b=$('#staffBtn');if(b){var n=pendingCount();b.textContent='Xodimlar'+(n?' ('+n+')':'')}}
+
+function render(){
+document.querySelectorAll('.tabs button').forEach(function(b){b.classList.toggle('on',b.dataset.v===view)});
+var m=$('#main');if(!m)return;
+var h='<div class="note">Maxfiy ma\'lumot (pasport, telefon, rasm). Sahifani faqat StepUpEdu xodimlari bilan ulashing.</div>';
+if(loadErr)h+='<div class="note">'+esc(loadErr)+'</div>';
+if(!loaded)h+='<div class="empty">Ma\'lumotlar yuklanmoqda...</div>';
+else if(view==='dash')h+=dash();else if(view==='list')h+=list();else h+=unis();
+m.innerHTML=h;wire();
+}
+
+function dash(){
+var now=new Date(),ym=now.toISOString().slice(0,7),months=[],i;
+for(i=5;i>=0;i--){var d=new Date(now.getFullYear(),now.getMonth()-i,1);months.push({k:d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'),n:0,l:['Yan','Fev','Mar','Apr','May','Iyn','Iyl','Avg','Sen','Okt','Noy','Dek'][d.getMonth()]})}
+var won=0,thisM=0,debt={},byS={},byU={};
+clients.forEach(function(c){
+var k=(c.createdAt||'').slice(0,7);if(k===ym)thisM++;months.forEach(function(x){if(x.k===k)x.n++});
+if(WON[c.status])won++;byS[c.status]=(byS[c.status]||0)+1;
+var u=(c.university||'').trim();if(u)byU[u]=(byU[u]||0)+1;
+var cur=c.currency||'USD',d2=(+c.contract||0)-paid(c);if(d2>0)debt[cur]=(debt[cur]||0)+d2});
+var mx=Math.max.apply(null,months.map(function(x){return x.n}).concat([1]));
+var debtTxt=Object.keys(debt).map(function(k){return money(debt[k],k)}).join(' · ')||'Qarz yo\'q';
+var h='<div class="kpis"><div class="kpi"><small>Jami mijozlar</small><b>'+clients.length+'</b></div>'+
+'<div class="kpi"><small>Shu oy kelgan</small><b>'+thisM+'</b></div>'+
+'<div class="kpi"><small>Universitetga kirgan</small><b>'+won+'</b><span>qabul, viza yoki yetib borgan</span></div>'+
+'<div class="kpi"><small>Jami qarz</small><b style="font-size:17px;line-height:1.6">'+esc(debtTxt)+'</b></div></div>';
+h+='<div class="grid2"><div class="box"><h3>Oylar bo\'yicha yangi mijozlar</h3><div class="bars">'+months.map(function(x){return '<div><b>'+x.n+'</b><i style="height:'+(x.n/mx*100)+'%"></i>'+x.l+'</div>'}).join('')+'</div></div>';
+var sm=Math.max.apply(null,Object.keys(STATUS).map(function(k){return byS[k]||0}).concat([1]));
+h+='<div class="box"><h3>Holat bo\'yicha</h3>'+Object.keys(STATUS).map(function(k){var n=byS[k]||0;return '<div class="hrow"><span class="l">'+STATUS[k]+'</span><span class="t"><i style="width:'+(n/sm*100)+'%"></i></span><span class="n">'+n+'</span></div>'}).join('')+'</div></div>';
+var top=Object.keys(byU).sort(function(a,b){return byU[b]-byU[a]}).slice(0,6),um=top.length?byU[top[0]]:1;
+h+='<div class="box"><h3>Eng ko\'p mijoz kirgan universitetlar</h3>'+(top.length?top.map(function(k){return '<div class="hrow"><span class="l">'+esc(k)+'</span><span class="t"><i style="width:'+(byU[k]/um*100)+'%"></i></span><span class="n">'+byU[k]+'</span></div>'}).join(''):'<div class="empty">Hali universitet kiritilmagan</div>')+'</div>';
+return h;
+}
+
+function filtered(){var s=q.trim().toLowerCase();
+return clients.filter(function(c){
+if(fs&&c.status!==fs)return false;if(fu&&(c.university||'').trim()!==fu)return false;
+if(!s)return true;return [c.fullName,c.passportNo,c.phone,c.phone2,c.university,c.fatherPhone,c.motherPhone].join(' ').toLowerCase().indexOf(s)>-1})
+.sort(function(a,b){return (b.createdAt||'')<(a.createdAt||'')?-1:1})}
+
+function list(){
+var us={};clients.forEach(function(c){var u=(c.university||'').trim();if(u)us[u]=1});
+var h='<div class="filters"><input id="q" placeholder="Ism, pasport yoki telefon bo\'yicha qidirish" value="'+esc(q)+'">'+
+'<select id="fs"><option value="">Barcha holatlar</option>'+Object.keys(STATUS).map(function(k){return '<option value="'+k+'"'+(fs===k?' selected':'')+'>'+STATUS[k]+'</option>'}).join('')+'</select>'+
+'<select id="fu"><option value="">Barcha universitetlar</option>'+Object.keys(us).sort().map(function(k){return '<option'+(fu===k?' selected':'')+'>'+esc(k)+'</option>'}).join('')+'</select>'+
+'<button class="btn" id="csv">CSV nusxalash</button></div>';
+var r=filtered();
+if(!r.length)return h+'<div class="empty">'+(clients.length?'Hech narsa topilmadi':'Hali mijoz yo\'q. "+ Yangi mijoz" tugmasi bilan birinchisini qo\'shing.')+'</div>';
+h+='<div class="list">'+r.map(function(c){var d=(+c.contract||0)-paid(c);
+return '<button class="row" data-id="'+esc(c.id)+'"><div class="av">'+(c.photo?'<img alt="" src="'+esc(c.photo)+'">':esc(initials(c.fullName)))+'</div>'+
+'<div><b>'+esc(c.fullName)+'</b><small>'+esc(c.phone||'telefon yo\'q')+'</small></div>'+
+'<div class="c3"><b style="font-weight:600">'+esc(c.university||'Universitet tanlanmagan')+'</b><small>'+esc(c.faculty||'')+'</small></div>'+
+'<div class="c4"><small>'+(d>0?'Qarz: '+esc(money(d,c.currency)):(c.contract?'To\'langan':''))+'</small></div>'+
+'<span class="chip s-'+esc(c.status||'new')+'">'+esc(STATUS[c.status]||'Yangi')+'</span></button>'}).join('')+'</div>';
+return h;
+}
+
+function unis(){
+var g={};clients.forEach(function(c){var u=(c.university||'').trim();if(!u)return;(g[u]=g[u]||[]).push(c)});
+var keys=Object.keys(g).sort(function(a,b){return g[b].length-g[a].length});
+if(!keys.length)return '<div class="empty">Universitet kiritilgan mijoz yo\'q</div>';
+return keys.map(function(k){var all=g[k],w=all.filter(function(c){return WON[c.status]});
+return '<div class="uni"><h4>'+esc(k)+'</h4><div class="m">Jami: '+all.length+' · Kirgan: '+w.length+'</div>'+
+(w.length?'<ul>'+w.map(function(c){return '<li data-id="'+esc(c.id)+'">'+esc(c.fullName)+(c.faculty?' · '+esc(c.faculty):'')+'</li>'}).join('')+'</ul>':'<small style="color:var(--muted)">Hali kirgan mijoz yo\'q</small>')+'</div>'}).join('');
+}
+
+function wire(){
+var el;
+document.querySelectorAll('.row,.uni li').forEach(function(b){b.addEventListener('click',function(){detail(b.dataset.id)})});
+if(el=$('#q'))el.addEventListener('input',function(){q=this.value;var p=this.selectionStart;render();var n=$('#q');n.focus();n.setSelectionRange(p,p)});
+if(el=$('#fs'))el.addEventListener('change',function(){fs=this.value;render()});
+if(el=$('#fu'))el.addEventListener('change',function(){fu=this.value;render()});
+if(el=$('#csv'))el.addEventListener('click',csv);
+}
+
+function csv(){
+var cols=[['fullName','F.I.Sh.'],['phone','Telefon'],['passportNo','Pasport'],['birth','Tug\'ilgan'],['fatherName','Otasi'],['fatherPhone','Otasi raqami'],['motherName','Onasi'],['motherPhone','Onasi raqami'],['university','Universitet'],['faculty','Fakultet'],['status','Holat'],['contract','Shartnoma'],['currency','Valyuta']];
+var rows=[cols.map(function(c){return c[1]}).join('\t')].concat(filtered().map(function(c){return cols.map(function(k){var v=k[0]==='status'?STATUS[c.status]||'':c[k[0]];return String(v==null?'':v).replace(/[\t\r\n]+/g,' ')}).join('\t')}));
+var t=rows.join('\n');
+try{navigator.clipboard.writeText(t).then(function(){toast('Jadval nusxalandi (Excel/Sheets\'ga qo\'ying)')},fallback)}catch(e){fallback()}
+function fallback(){openM('<h2>Jadval</h2><p style="color:var(--muted)">Hammasini belgilab nusxalang:</p><textarea style="width:100%;height:260px" readonly>'+esc(t)+'</textarea><div class="acts"><button class="btn" id="x">Yopish</button></div>');$('#x').onclick=closeM}
+}
+
+function byId(id){for(var i=0;i<clients.length;i++)if(clients[i].id===id)return clients[i]}
+function kv(l,v,c){return v?'<div><small>'+l+'</small>'+esc(v)+(c?'<button class="cp" data-cp="'+esc(v)+'">nusxa</button>':'')+'</div>':''}
+function upd(id,patch){patch.updatedAt=new Date().toISOString();return sb.from('clients').update(toRow(patch)).eq('id',id).then(function(r){if(r.error)throw r.error;return loadAll()})}
+
+function detail(id){
+var c=byId(id);if(!c)return;var d=(+c.contract||0)-paid(c);
+var h='<div class="hd"><div class="av">'+(c.photo?'<img alt="" src="'+esc(c.photo)+'">':esc(initials(c.fullName)))+'</div><div style="flex:1"><h2>'+esc(c.fullName)+'</h2>'+
+'<select id="st" style="padding:6px 10px;border-radius:99px;border:1px solid var(--line);background:var(--bg)">'+Object.keys(STATUS).map(function(k){return '<option value="'+k+'"'+(c.status===k?' selected':'')+'>'+STATUS[k]+'</option>'}).join('')+'</select></div></div>';
+h+='<div class="sec">Shaxsiy</div><div class="kv">'+kv('Tug\'ilgan sana',dmy(c.birth))+kv('Jinsi',c.gender)+kv('Pasport raqami',c.passportNo,1)+kv('Pasport muddati',dmy(c.passportExpiry))+kv('Manzil',c.address)+'</div>';
+h+='<div class="sec">Aloqa</div><div class="kv">'+kv('Telefon',c.phone,1)+kv('Qo\'shimcha telefon',c.phone2,1)+kv('Email',c.email,1)+'</div>';
+h+='<div class="sec">Ota-ona</div><div class="kv">'+kv('Otasi',c.fatherName)+kv('Otasining raqami',c.fatherPhone,1)+kv('Onasi',c.motherName)+kv('Onasining raqami',c.motherPhone,1)+'</div>';
+h+='<div class="sec">Ta\'lim</div><div class="kv">'+kv('Davlat',c.country)+kv('Universitet',c.university)+kv('Fakultet',c.faculty)+kv('Daraja',c.level)+kv('Qayerdan keldi',c.source)+kv('Qo\'shilgan sana',dmy(c.createdAt))+kv('Mas\'ul xodim',pname(c.createdBy))+'</div>';
+h+='<div class="sec">Moliya</div><div class="kv"><div><small>Shartnoma</small>'+esc(money(c.contract,c.currency))+'</div><div><small>To\'langan</small>'+esc(money(paid(c),c.currency))+'</div><div><small>Qoldiq</small><b style="color:'+(d>0?'var(--bad)':'var(--ok)')+'">'+esc(money(Math.max(d,0),c.currency))+'</b></div></div>';
+h+='<table style="margin-top:8px">'+(c.payments||[]).map(function(p,i){return '<tr><td>'+dmy(p.date)+'</td><td>'+esc(money(p.amount,c.currency))+'</td><td>'+esc(p.note||'')+'</td><td style="text-align:right"><button class="cp" data-delpay="'+i+'">o\'chirish</button></td></tr>'}).join('')+'</table>';
+h+='<div class="fg" style="margin-top:8px;grid-template-columns:1fr 1fr 1fr auto;align-items:end"><label>Summa<input id="pa" type="number" min="0"></label><label>Sana<input id="pd" type="date" value="'+new Date().toISOString().slice(0,10)+'"></label><label>Izoh<input id="pn"></label><button class="btn" id="padd">Qo\'shish</button></div>';
+if(c.notes)h+='<div class="sec">Izoh</div><div style="white-space:pre-wrap">'+esc(c.notes)+'</div>';
+h+='<div class="sec">Pasport nusxasi</div><div id="scan" style="color:var(--muted)">'+(c.passportScan?'Yuklanmoqda...':'Yuklanmagan')+'</div>';
+h+='<div class="acts">'+(isAdmin?'<button class="btn d" id="del">O\'chirish</button>':'')+'<button class="btn" id="edit">Tahrirlash</button><button class="btn p" id="x">Yopish</button></div>';
+openM(h);
+$('#x').onclick=closeM;$('#edit').onclick=function(){form(c)};
+document.querySelectorAll('#mod [data-cp]').forEach(function(b){b.onclick=function(){copy(b.dataset.cp)}});
+$('#st').onchange=function(){upd(id,{status:this.value}).then(function(){toast('Holat yangilandi')},function(){toast('Saqlab bo\'lmadi')})};
+$('#padd').onclick=function(){var a=+$('#pa').value;if(!a){toast('Summani kiriting');return}
+upd(id,{payments:(c.payments||[]).concat([{amount:a,date:$('#pd').value,note:$('#pn').value.trim()}])}).then(function(){toast('To\'lov qo\'shildi');detail(id)},function(){toast('Saqlab bo\'lmadi')})};
+document.querySelectorAll('#mod [data-delpay]').forEach(function(b){b.onclick=function(){var arr=(c.payments||[]).slice();arr.splice(+b.dataset.delpay,1);upd(id,{payments:arr}).then(function(){detail(id)},function(){toast('Saqlab bo\'lmadi')})}});
+if($('#del'))$('#del').onclick=function(){openM('<h2>O\'chirishni tasdiqlang</h2><p>'+esc(c.fullName)+' ma\'lumotlari butunlay o\'chiriladi.</p><div class="acts"><button class="btn" id="no">Bekor qilish</button><button class="btn d" id="yes">Ha, o\'chirish</button></div>');
+$('#no').onclick=function(){detail(id)};
+$('#yes').onclick=function(){(c.passportScan?sb.storage.from('client-files').remove([c.passportScan]):Promise.resolve()).then(function(){return sb.from('clients').delete().eq('id',id)}).then(function(r){if(r&&r.error)throw r.error;closeM();toast('O\'chirildi');return loadAll()},function(){toast('O\'chirib bo\'lmadi')})}};
+if(c.passportScan)sb.storage.from('client-files').createSignedUrl(c.passportScan,600).then(function(r){var e=$('#scan');if(!e)return;e.innerHTML=r.data&&r.data.signedUrl?'<img class="scan" alt="Pasport" src="'+esc(r.data.signedUrl)+'">':'Yuklab bo\'lmadi'},function(){var e=$('#scan');if(e)e.textContent='Yuklab bo\'lmadi'});
+}
+
+function form(c){
+var isNew=!c,v=c||{status:'new',country:'Turkiya',currency:'USD'};
+var h='<h2>'+(isNew?'Yangi mijoz':'Mijozni tahrirlash')+'</h2>';
+SECTIONS.forEach(function(s){h+='<div class="sec">'+s[0]+'</div><div class="fg">';
+s[1].forEach(function(f){var val=v[f[0]]==null?'':v[f[0]],inner;
+if(f[2]==='select'){var o=f[3]==='STATUS'?Object.keys(STATUS).map(function(k){return [k,STATUS[k]]}):f[3].map(function(k){return [k,k]});
+inner='<select data-f="'+f[0]+'">'+o.map(function(p){return '<option value="'+esc(p[0])+'"'+(String(val)===p[0]?' selected':'')+'>'+esc(p[1]||'—')+'</option>'}).join('')+'</select>'}
+else if(f[2]==='textarea')inner='<textarea data-f="'+f[0]+'">'+esc(val)+'</textarea>';
+else inner='<input data-f="'+f[0]+'" type="'+f[2]+'" value="'+esc(val)+'"'+(f[2]==='number'?' min="0"':'')+'>';
+h+='<label'+(f[2]==='textarea'?' class="w"':'')+'>'+f[1]+inner+'</label>'});
+h+='</div>'});
+h+='<div class="sec">Rasm va hujjat</div><div class="fg"><label>Mijoz rasmi<input type="file" accept="image/*" id="ph"></label><label>Pasport nusxasi (rasm)<input type="file" accept="image/*" id="ps"></label></div>';
+h+='<div class="acts"><button class="btn" id="cn">Bekor qilish</button><button class="btn p" id="sv">Saqlash</button></div>';
+openM(h);
+$('#cn').onclick=function(){c?detail(c.id):closeM()};
+$('#sv').onclick=function(){
+var o={};document.querySelectorAll('#mod [data-f]').forEach(function(e){var k=e.dataset.f;o[k]=e.type==='number'?(e.value===''?0:+e.value):e.value.trim()});
+if(!o.fullName){toast('F.I.Sh. kiritilishi shart');return}
+var btn=this;btn.disabled=true;btn.textContent='Saqlanmoqda...';
+var ph=$('#ph').files[0],ps=$('#ps').files[0],newId=null;
+Promise.all([ph?shrink(ph,260,.8,40000):null,ps?shrink(ps,1200,.72,300000):null]).then(function(r){
+o.updatedAt=new Date().toISOString();if(r[0])o.photo=r[0];
+var req=isNew?sb.from('clients').insert(toRow(Object.assign({payments:[]},o))).select('id').single():sb.from('clients').update(toRow(o)).eq('id',c.id).select('id').single();
+return req.then(function(x){if(x.error)throw x.error;newId=x.data.id;
+if(!r[1])return null;var path=newId+'/passport.jpg';
+return sb.storage.from('client-files').upload(path,dataToBlob(r[1]),{upsert:true,contentType:'image/jpeg'}).then(function(u){if(u.error)throw u.error;return sb.from('clients').update({passport_scan:path}).eq('id',newId)})})
+}).then(function(){return loadAll()}).then(function(){toast('Saqlandi');detail(newId)})
+.catch(function(e){btn.disabled=false;btn.textContent='Saqlash';toast(e&&e.message==='big'?'Rasm juda katta, kichikroq rasm tanlang':'Saqlab bo\'lmadi')});
+};
+}
+
+function setStatus(id,st){sb.from('profiles').update({status:st}).eq('id',id).then(function(r){if(r.error){toast('Saqlab bo\'lmadi');return}toast(st==='approved'?'Tasdiqlandi':'Bloklandi');loadAll()})}
+function staffModal(){staffOpen=true;var ids=Object.keys(profiles).sort(function(a,b){var o={pending:0,approved:1,blocked:2};return o[profiles[a].status]-o[profiles[b].status]}),lab={pending:'Kutmoqda',approved:'Tasdiqlangan',blocked:'Bloklangan'};
+var h='<h2>Xodimlar</h2><p style="color:var(--muted)">Kirishga ruxsat bering yoki bloklang.</p>'+(ids.length?'<table>'+ids.map(function(i){var p=profiles[i],st=p.status,self=i===me.id;
+return '<tr><td><b>'+esc(p.full_name||'(ismsiz)')+(p.is_admin?' · ega':'')+'</b><br><small style="color:var(--muted)">'+esc(p.role_title||'')+(p.phone?' · '+esc(p.phone):'')+'</small></td><td><span class="chip '+(st==='approved'?'s-accepted':st==='blocked'?'s-rejected':'s-docs')+'">'+lab[st]+'</span></td><td style="text-align:right">'+(self?'':(st!=='approved'?'<button class="btn p" data-ap="'+esc(i)+'">Tasdiqlash</button> ':'')+(st!=='blocked'?'<button class="btn d" data-bl="'+esc(i)+'">Bloklash</button>':''))+'</td></tr>'}).join('')+'</table>':'<div class="empty">Hali xodim yo\'q</div>')+'<div class="acts"><button class="btn p" id="sx">Yopish</button></div>';
+openM(h);staffOpen=true;$('#sx').onclick=closeM;
+document.querySelectorAll('#mod [data-ap]').forEach(function(b){b.onclick=function(){setStatus(b.dataset.ap,'approved')}});
+document.querySelectorAll('#mod [data-bl]').forEach(function(b){b.onclick=function(){setStatus(b.dataset.bl,'blocked')}})}
+
+function start(){
+if(!window.supabase){gate('Kutubxona yuklanmadi. Internetni tekshirib, sahifani qayta oching.');return}
+sb=supabase.createClient(CFG.url,CFG.key);
+sb.auth.getSession().then(function(r){route(r.data.session)},function(){authScreen('login')});
+}
+start();
+})();
+</script>
+</body>
+</html>
