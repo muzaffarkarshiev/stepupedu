@@ -14,7 +14,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 .top{position:sticky;top:0;z-index:20;background:var(--card);border-bottom:1px solid var(--line)}
 .top .in{max-width:1100px;margin:0 auto;padding:10px 14px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .brand{display:flex;align-items:center;gap:9px;font-weight:700;font-size:17px}
-.logo{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#1d3fa8,#0b2a6f);color:#fff;font-size:0;overflow:hidden;flex:none}
+.logo{width:36px;height:36px;border-radius:50%;background:url(data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA4KCw0LCQ4NDA0QDw4RFiQXFhQUFiwgIRokNC43NjMuMjI6QVNGOj1OPjIySGJJTlZYXV5dOEVmbWVabFNbXVn/2wBDAQ8QEBYTFioXFypZOzI7WVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVn/wAARCAA4ADgDASIAAhEBAxEB/8QAGwAAAgMBAQEAAAAAAAAAAAAAAAUDBAcGAQL/xAA6EAABAwMCAwUFBgQHAAAAAAABAgMEAAUREiExQVEGE2FxoRQVIjKxByNCcpHBFjNSkjREgbLS4fD/xAAXAQEBAQEAAAAAAAAAAAAAAAACAwQB/8QAHREAAwACAwEBAAAAAAAAAAAAAAECETEDEiIhQf/aAAwDAQACEQMRAD8A0ilV4vsW0tKLq0lY4gnAHTPj4DJ+tfV9uiLXAW6pWlWCQcZwOZxz4gAcyRWalCb6yqZLbuoAWoBbDAeaQOO+4Oep51SIz9egt40Wrl26mvrIjApTyJJT6A5/UmlB7S3PXq75Gfyf+NQyrQpuOqVDkNzYqPnW0CFN/nQd0+fDxpiqBFHZv+R9+Iwm+054kuaO78seorSlK0iXot27tzOjrAkjWjmUkn0J+hFd7Zb9FuzSS2tIWdsA7E9PA+B38xvWTxbQpcdEqbIbgxV/It0Eqc/Igbq8+HjTHu02RlM2I3dTlSUlchgMtODOccSc9DyNC4l6FLf6a9RSuwXVF1t6HUq1KwCTwJHXz2IPiDRWZrHwqcL9odwU7OTFSfhByR4DYeur0pfFjiz27vbhDukeSX8Bxla2ilGkYIONJ3ztUXbXV7/d1f0n/cr96sXafNj3VT8OU6yX2mncBXwq1NpJyk7HfNbYh0lKIVSTyy6hS5LjElmSh190lEWdoCC4vG7EhPAkjYHn41F3B9mD2HDZArvkwc/5nOnuOvzb+XjXtkMe9omRkIREmOskrab2bcUndDiB+FaVcQNiCcUe0ue2G4Z+49k96BvHw+0FPd5/v3qengZIta4zr8l6ShqQ0QiVP0BZQvH8iOngCBsTy8KoSo3vm297b4V0kSQ/guPLU6Vo0nJJxpG+NhVu+KYsnskQoRLmMtDQ24NSGlK3U4ofiWpXAHYACq1qnTJF0EiZKdeLDLruFK+FOltRGBwG+Kcy2uy/A1STwXPs8nqanriqPwk5A89j66fWilfYrV7/AGdP9Iz/AHJoqHMvQ4fwbfaJb1NTkSkp+EnBPgdx66v1FKbih1dvtUsNrLRiJbU4EnSFIUpOCfICtRvlrbusBbK0hSsHAzjPhnlwG/IgGsnke9OzssttSX2kZISUkhK+oKeGeoP03q3DyaxtAuQsDimu1NtW2cFT6AcdCcH0NOEJBsiByMZCf9PbTVezuxLjcGJroZhSoTiX3in4W3m0qGogclDoNjUoeSns+l08BFQvHP8AxhNdt9qyclYQpvbine01yccOSJDg36A4HoKsW9DrduusstrDQiFtKyk6Spa0pwD5Zqxd3YlruEiU0GZsuY4t9pSvibZbUolJx+JR477Cl7HvTtDLDbsl95ORqKiSlHQBPDPQD/uqK/GPwPX1kffZ3b1OzlylJ+EHAPgNz66f0NFd3YrW3aoCGUpCVYGRnOByGefEknmSaKw3Xasl5WEMqXXWzxbo0pLyBqUME4znpkc/qORFFFFPAjhrj2AfQoqiLJT0+YfsfrSr+DLtqx3acddK/wDjRRVp5aA4Q0t3YCQtQVLXhPT5R+59B513NqssW1tJSyhOpPA4wB1wP34nmaKKnV1WzqlIZUUUUBH/2Q==) center/cover;color:transparent;font-size:0;overflow:hidden;flex:none}
 .tabs{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap}
 .tabs button{border:0;background:none;padding:8px 13px;border-radius:999px;color:var(--muted);font-weight:600;cursor:pointer}
 .tabs button.on{background:rgba(79,70,229,.12);color:var(--brand)}
@@ -100,6 +100,7 @@ td,th{padding:7px 4px;border-bottom:1px solid var(--line);text-align:left}
 <div class="toast" id="toast"></div>
 <script>
 (function(){
+var ic=document.createElement("link");ic.rel="icon";ic.href=getComputedStyle(document.querySelector(".logo")).backgroundImage.replace(/^url\(["']?|["']?\)$/g,"");document.head.appendChild(ic);
 var CFG={url:'https://iutkiawmfqxwifbwljqj.supabase.co',key:'sb_publishable_rMlgOREFzUM3R6b1ofLwYw_bbIxV-Zt'};
 var STATUS={new:'Yangi',docs:"Hujjat yig'ilmoqda",applied:'Topshirildi',accepted:'Qabul qilindi',visa:'Vizada',arrived:'Yetib bordi',rejected:'Rad etildi'};
 var WON={accepted:1,visa:1,arrived:1};
@@ -148,7 +149,15 @@ if(btn)$('#gb').onclick=fn;if(me)$('#go').onclick=logout}
 function logout(){clearInterval(poll);if(chan){sb.removeChannel(chan);chan=null}sb.auth.signOut().then(function(){me=null;prof=null;authScreen('login')})}
 function errTxt(e){var m=(e&&e.message)||'';if(/Invalid login/i.test(m))return 'Email yoki parol noto\'g\'ri';if(/already registered/i.test(m))return 'Bu email allaqachon ro\'yxatdan o\'tgan';if(/Password should/i.test(m))return 'Parol kamida 6 belgi bo\'lsin';if(/Email not confirmed/i.test(m))return 'Emailingizni tasdiqlang (xatni tekshiring)';return m||'Xatolik yuz berdi'}
 
+var SHARED='staff@stepupedu.uz';
+function codeScreen(){
+$('#app').innerHTML='<div class="gate"><div class="logo"></div><h2>StepUpEdu xodimlari</h2><p style="color:var(--muted)">Kirish kodini kiriting.</p><input id="ac" type="password" placeholder="Kirish kodi" autocomplete="off" class="ai"><p id="aerr" style="color:var(--bad);min-height:22px;margin:6px 0"></p><button class="btn p" id="ago" style="width:100%">Kirish</button><p style="margin-top:14px"><button class="cp" id="asw" style="font-size:14px">Email bilan kirish (ega)</button></p></div>';
+$('#asw').onclick=function(){authScreen('mail')};
+var go=function(){var c=$('#ac').value.trim(),er=function(m){$('#aerr').textContent=m};if(!c){er('Kodni kiriting');return}var b=$('#ago');b.disabled=true;sb.auth.signInWithPassword({email:SHARED,password:c}).then(function(x){b.disabled=false;if(x.error){er('Kod noto\'g\'ri');return}route(x.data.session)},function(){b.disabled=false;er('Ulanib bo\'lmadi')})};
+$('#ago').onclick=go;$('#ac').addEventListener('keydown',function(ev){if(ev.key==='Enter')go()});$('#ac').focus();
+}
 function authScreen(mode){
+if(mode==='login'){codeScreen();return}if(mode==='mail')mode='login';
 var reg=mode==='reg';
 var f=function(id,ph,type){return '<input id="'+id+'" type="'+(type||'text')+'" placeholder="'+ph+'" autocomplete="off" class="ai">'};
 $('#app').innerHTML='<div class="gate"><div class="logo"></div><h2>StepUpEdu xodimlari</h2><p style="color:var(--muted)">'+(reg?'Ro\'yxatdan o\'ting. Egasi tasdiqlagach kira olasiz.':'Hisobingiz bilan kiring.')+'</p>'+
