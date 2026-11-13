@@ -183,6 +183,7 @@ function logout(){clearInterval(poll);if(chan){sb.removeChannel(chan);chan=null}
 function errTxt(e){var m=(e&&e.message)||'';if(/Invalid login/i.test(m))return 'Email yoki parol noto\'g\'ri';if(/already registered/i.test(m))return 'Bu email allaqachon ro\'yxatdan o\'tgan';if(/Password should/i.test(m))return 'Parol kamida 6 belgi bo\'lsin';if(/Database error saving|registration code/i.test(m))return 'Ro\'yxatdan o\'tish kodi noto\'g\'ri';if(/Email not confirmed/i.test(m))return 'Emailingizni tasdiqlang (xatni tekshiring)';return m||'Xatolik yuz berdi'}
 
 var SHARED='staff@stepupedu.uz';
+var pkAvail=false;function pkCan(){return pkOk()&&pkAvail}
 function pkOk(){return !!(window.PublicKeyCredential&&sb&&sb.auth&&sb.auth.signInWithPasskey)}
 function pkErr(e){var c=(e&&(e.code||e.name))||'',m=(e&&e.message)||'';
 if(/NotAllowed|AbortError/i.test(c+m))return 'Bekor qilindi';
@@ -265,7 +266,7 @@ function sched(){clearTimeout(rt);rt=setTimeout(loadAll,400)}
 function shell(){
 $('#app').innerHTML='<div class="top"><div class="in"><div class="brand"><div class="logo">S</div>StepUpEdu xodimlari</div>'+
 '<div class="tabs"><button data-v="dash">Bosh sahifa</button><button data-v="list">Mijozlar</button><button data-v="unis">Universitetlar</button></div>'+
-(isAdmin?'<button class="btn" id="staffBtn">Xodimlar</button>':'')+(pkOk()&&lsGet(pkKey())!=='1'?'<button class="btn" id="pkTop" title="Face ID bilan kirishni yoqish">🔒 Face ID</button>':'')+'<button class="btn p" id="addBtn">+ Yangi mijoz</button><button class="btn" id="outBtn">Chiqish</button></div></div><main id="main"></main>';
+(isAdmin?'<button class="btn" id="staffBtn">Xodimlar</button>':'')+(pkCan()&&lsGet(pkKey())!=='1'?'<button class="btn" id="pkTop" title="Face ID bilan kirishni yoqish">🔒 Face ID</button>':'')+'<button class="btn p" id="addBtn">+ Yangi mijoz</button><button class="btn" id="outBtn">Chiqish</button></div></div><main id="main"></main>';
 document.querySelectorAll('.tabs button').forEach(function(b){b.addEventListener('click',function(){view=b.dataset.v;render()})});
 $('#addBtn').addEventListener('click',function(){form(null)});if($('#pkTop'))$('#pkTop').onclick=pkEnable;$('#outBtn').addEventListener('click',logout);
 if($('#staffBtn'))$('#staffBtn').addEventListener('click',staffModal);updBadge();
@@ -279,7 +280,7 @@ var m=$('#main');if(!m)return;
 var h='<div class="note">Maxfiy ma\'lumot (pasport, telefon, rasm). Sahifani faqat StepUpEdu xodimlari bilan ulashing.</div>';
 if(loadErr)h+='<div class="note">'+esc(loadErr)+'</div>';
 if(noDeadlineCol)h+='<div class="note">Muddat saqlanishi uchun Supabase\'da bir marta shu buyruqni bajaring: <b>alter table clients add column deadline date;</b></div>';
-if(pkOk()&&!lsGet(pkKey()))h+='<div class="box" style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span style="flex:1;min-width:200px">🔒 Keyingi safar parolsiz, <b>Face ID / barmoq izi</b> bilan kiring.</span><button class="btn p" id="pkOn">Yoqish</button><button class="btn" id="pkNo">Keyinroq</button></div>';
+if(pkCan()&&!lsGet(pkKey()))h+='<div class="box" style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span style="flex:1;min-width:200px">🔒 Keyingi safar parolsiz, <b>Face ID / barmoq izi</b> bilan kiring.</span><button class="btn p" id="pkOn">Yoqish</button><button class="btn" id="pkNo">Keyinroq</button></div>';
 if(loaded)h+=alertBox();
 if(!loaded)h+='<div class="empty">Ma\'lumotlar yuklanmoqda...</div>';
 else if(view==='dash')h+=dash();else if(view==='list')h+=list();else h+=unis();
@@ -472,7 +473,8 @@ function start(){
 if(!window.supabase){gate('Kutubxona yuklanmadi. Internetni tekshirib, sahifani qayta oching.');return}
 sb=supabase.createClient(CFG.url,CFG.key,{auth:{experimental:{passkey:true}}});
 sb.auth.onAuthStateChange(function(ev){if(ev==='PASSWORD_RECOVERY'){recovering=true;newPassScreen()}});
-sb.auth.getSession().then(function(r){if(recovering&&r.data.session){newPassScreen();return}route(r.data.session)},function(){authScreen('login')});
+var uv=window.PublicKeyCredential&&PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable?PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable().catch(function(){return false}):Promise.resolve(false);
+Promise.race([uv,new Promise(function(r){setTimeout(function(){r(false)},1500)})]).then(function(v){pkAvail=!!v}).then(function(){return sb.auth.getSession()}).then(function(r){if(recovering&&r.data.session){newPassScreen();return}route(r.data.session)},function(){authScreen('login')});
 }
 start();
 })();
