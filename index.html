@@ -180,7 +180,7 @@ function dataToBlob(d){var p=d.split(','),bin=atob(p[1]),a=new Uint8Array(bin.le
 function gate(msg,btn,fn){$('#app').innerHTML='<div class="gate"><div class="logo"></div><h2>StepUpEdu xodimlari</h2><p style="color:var(--muted)">'+msg+'</p>'+(btn?'<button class="btn p" id="gb" style="margin-top:6px">'+btn+'</button> ':'')+(me?'<button class="btn" id="go">Chiqish</button>':'')+'</div>';
 if(btn)$('#gb').onclick=fn;if(me)$('#go').onclick=logout}
 function logout(){clearInterval(poll);if(chan){sb.removeChannel(chan);chan=null}sb.auth.signOut().then(function(){me=null;prof=null;authScreen('login')})}
-function errTxt(e){var m=(e&&e.message)||'';if(/Invalid login/i.test(m))return 'Email yoki parol noto\'g\'ri';if(/already registered/i.test(m))return 'Bu email allaqachon ro\'yxatdan o\'tgan';if(/Password should/i.test(m))return 'Parol kamida 6 belgi bo\'lsin';if(/Email not confirmed/i.test(m))return 'Emailingizni tasdiqlang (xatni tekshiring)';return m||'Xatolik yuz berdi'}
+function errTxt(e){var m=(e&&e.message)||'';if(/Invalid login/i.test(m))return 'Email yoki parol noto\'g\'ri';if(/already registered/i.test(m))return 'Bu email allaqachon ro\'yxatdan o\'tgan';if(/Password should/i.test(m))return 'Parol kamida 6 belgi bo\'lsin';if(/Database error saving|registration code/i.test(m))return 'Ro\'yxatdan o\'tish kodi noto\'g\'ri';if(/Email not confirmed/i.test(m))return 'Emailingizni tasdiqlang (xatni tekshiring)';return m||'Xatolik yuz berdi'}
 
 var SHARED='staff@stepupedu.uz';
 function fld(id,label,type){var pw=type==='password';return '<div class="fld"><input id="'+id+'" type="'+(type||'text')+'" placeholder=" " autocomplete="'+(pw?'current-password':'off')+'"><span>'+label+'</span>'+(pw?'<button type="button" class="eye" data-eye="'+id+'">Ko\'rsatish</button>':'')+'</div>'}
@@ -203,20 +203,22 @@ sb.auth.updateUser({password:p}).then(function(x){b.disabled=false;if(x.error){$
 function authScreen(mode){
 if(mode==='code'){codeScreen();return}if(mode==='mail')mode='login';
 var reg=mode==='reg';
-if(reg)authCard('<p class="asub">Mijozlar bazasi bilan ishlash uchun ro\'yxatdan o\'ting.</p>'+fld('ae','Email','email')+fld('a1','F.I.Sh. (to\'liq)')+fld('a2','Lavozimingiz')+fld('a3','Telefon raqamingiz','tel')+fld('ap','Parol','password')+
-'<p class="afine">Ro\'yxatdan o\'tgach, StepUpEdu egasi so\'rovingizni tasdiqlaydi va siz tizimga kira olasiz.</p><button class="abtn" id="ago">Ro\'yxatdan o\'tish</button><p class="aerr" id="aerr"></p>','Hisobingiz bormi?<button id="asw">Kirish</button>');
+if(reg)authCard('<p class="asub">Mijozlar bazasi bilan ishlash uchun ro\'yxatdan o\'ting.</p>'+fld('ae','Email','email')+fld('a1','F.I.Sh. (to\'liq)')+fld('a2','Lavozimingiz')+fld('a3','Telefon raqamingiz','tel')+fld('ap','Parol','password')+fld('rc','Ro\'yxatdan o\'tish kodi','password')+
+'<p class="afine">Ro\'yxatdan o\'tish kodini StepUpEdu egasidan oling. Ro\'yxatdan o\'tgach, StepUpEdu egasi so\'rovingizni tasdiqlaydi va siz tizimga kira olasiz.</p><button class="abtn" id="ago">Ro\'yxatdan o\'tish</button><p class="aerr" id="aerr"></p>','Hisobingiz bormi?<button id="asw">Kirish</button>');
 else authCard('<p class="asub" style="margin-bottom:22px"></p>'+fld('ae','Email','email')+fld('ap','Parol','password')+'<button class="abtn" id="ago">Kirish</button><p class="aerr" id="aerr"></p><div class="or">YOKI</div><button class="alink" id="acode">Umumiy kod bilan kirish</button><br><button class="alink" id="afg" style="font-weight:400;margin-top:6px">Parolni unutdingizmi?</button>','Hisobingiz yo\'qmi?<button id="asw">Ro\'yxatdan o\'ting</button>');
 $('#asw').onclick=function(){authScreen(reg?'login':'reg')};
 if(!reg){$('#acode').onclick=codeScreen;$('#afg').onclick=forgotScreen}
 var er=function(m){$('#aerr').textContent=m},b=$('#ago');
-bindForm(reg?['ae','a1','a2','a3','ap']:['ae','ap'],b,function(){var e=$('#ae').value.trim(),p=$('#ap').value;
+bindForm(reg?['ae','a1','a2','a3','ap','rc']:['ae','ap'],b,function(){var e=$('#ae').value.trim(),p=$('#ap').value;
 b.disabled=true;
 if(reg){var n=$('#a1').value.trim(),r=$('#a2').value.trim(),ph=$('#a3').value.trim();
 if(n.split(/\s+/).length<2){b.disabled=false;er('Ism va familiyangizni to\'liq yozing');return}
 if(p.length<6){b.disabled=false;er('Parol kamida 6 belgi bo\'lsin');return}
-sb.auth.signUp({email:e,password:p,options:{data:{full_name:n,role_title:r,phone:ph}}}).then(function(x){b.disabled=false;
+var rc=$('#rc').value.trim();
+sb.rpc('check_reg_code',{c:rc}).then(function(ok){if(ok.error||ok.data!==true){b.disabled=false;er(ok.error?'Ulanib bo\'lmadi':'Ro\'yxatdan o\'tish kodi noto\'g\'ri. Kodni StepUpEdu egasidan oling.');return}
+sb.auth.signUp({email:e,password:p,options:{data:{full_name:n,role_title:r,phone:ph,reg_code:rc}}}).then(function(x){b.disabled=false;
 if(x.error){er(errTxt(x.error));return}
-if(x.data.session)route(x.data.session);else gate('Emailingizga tasdiqlash xati yuborildi. Xatdagi havolani bosing, so\'ng shu yerga qaytib kiring.','Kirish sahifasi',function(){authScreen('login')})},function(){b.disabled=false;er('Ulanib bo\'lmadi')})}
+if(x.data.session)route(x.data.session);else gate('Emailingizga tasdiqlash xati yuborildi. Xatdagi havolani bosing, so\'ng shu yerga qaytib kiring.','Kirish sahifasi',function(){authScreen('login')})},function(){b.disabled=false;er('Ulanib bo\'lmadi')})},function(){b.disabled=false;er('Ulanib bo\'lmadi')})}
 else sb.auth.signInWithPassword({email:e,password:p}).then(function(x){b.disabled=false;if(x.error){er(errTxt(x.error));return}route(x.data.session)},function(){b.disabled=false;er('Ulanib bo\'lmadi')})});
 }
 
@@ -442,7 +444,11 @@ function setStatus(id,st){sb.from('profiles').update({status:st}).eq('id',id).th
 function staffModal(){staffOpen=true;var ids=Object.keys(profiles).sort(function(a,b){var o={pending:0,approved:1,blocked:2};return o[profiles[a].status]-o[profiles[b].status]}),lab={pending:'Kutmoqda',approved:'Tasdiqlangan',blocked:'Bloklangan'};
 var h='<h2>Xodimlar</h2><p style="color:var(--muted)">Kirishga ruxsat bering yoki bloklang.</p>'+(ids.length?'<table>'+ids.map(function(i){var p=profiles[i],st=p.status,self=i===me.id;
 return '<tr><td><b>'+esc(p.full_name||'(ismsiz)')+(p.is_admin?' · ega':'')+'</b><br><small style="color:var(--muted)">'+esc(p.role_title||'')+(p.phone?' · '+esc(p.phone):'')+'</small></td><td><span class="chip '+(st==='approved'?'s-accepted':st==='blocked'?'s-rejected':'s-docs')+'">'+lab[st]+'</span></td><td style="text-align:right">'+(self?'':(st!=='approved'?'<button class="btn p" data-ap="'+esc(i)+'">Tasdiqlash</button> ':'')+(st!=='blocked'?'<button class="btn d" data-bl="'+esc(i)+'">Bloklash</button>':''))+'</td></tr>'}).join('')+'</table>':'<div class="empty">Hali xodim yo\'q</div>')+'<div class="acts"><button class="btn p" id="sx">Yopish</button></div>';
+h=h.replace('<div class="acts"><button class="btn p" id="sx">','<div class="sec">Ro\'yxatdan o\'tish kodi</div><p style="color:var(--muted);font-size:13px;margin:0 0 8px">Yangi xodim ro\'yxatdan o\'tishi uchun shu kodni bilishi kerak. Kodni faqat ishonchli odamlarga bering.</p><div class="fg" style="grid-template-columns:1fr auto auto;align-items:center"><input id="rcv" value="..." autocomplete="off"><button class="btn" id="rcc">Nusxa</button><button class="btn p" id="rcs">Saqlash</button></div><div class="acts"><button class="btn p" id="sx">');
 openM(h);staffOpen=true;$('#sx').onclick=closeM;
+sb.rpc('get_reg_code').then(function(r){var i=$('#rcv');if(i)i.value=r.data||''});
+$('#rcc').onclick=function(){copy($('#rcv').value)};
+$('#rcs').onclick=function(){var v=$('#rcv').value.trim();if(v.length<8){toast('Kod kamida 8 belgi bo\'lsin');return}sb.rpc('set_reg_code',{c:v}).then(function(r){toast(r.error?'Saqlab bo\'lmadi':'Yangi kod saqlandi')})};
 document.querySelectorAll('#mod [data-ap]').forEach(function(b){b.onclick=function(){setStatus(b.dataset.ap,'approved')}});
 document.querySelectorAll('#mod [data-bl]').forEach(function(b){b.onclick=function(){setStatus(b.dataset.bl,'blocked')}})}
 
